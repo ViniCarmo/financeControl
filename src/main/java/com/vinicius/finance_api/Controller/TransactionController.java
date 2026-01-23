@@ -1,16 +1,16 @@
 package com.vinicius.finance_api.Controller;
 
 import com.vinicius.finance_api.Dto.TransactionRequestDto;
+import com.vinicius.finance_api.Dto.TransactionResponseDto;
 import com.vinicius.finance_api.Service.TransactionService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController("/transactions")
+@RestController
+@RequestMapping("/transactions")
 public class TransactionController {
     private final TransactionService transactionService;
 
@@ -19,19 +19,29 @@ public class TransactionController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> saveTransaction(TransactionRequestDto transactionRequestDto) {
+    public ResponseEntity<Void> saveTransaction(@RequestBody @Valid TransactionRequestDto transactionRequestDto) {
         transactionService.saveTransaction(transactionRequestDto);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(201).build();
     }
-    @DeleteMapping
-    public ResponseEntity<Void> deleteTransaction(Integer id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteTransaction(@PathVariable Integer id) {
         transactionService.deleteTransactionById(id);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping
-    public ResponseEntity<List<TransactionRequestDto>> getAllTransactions() {
-        transactionService.getAllTransactions();
+    public ResponseEntity<List<TransactionResponseDto>> getAllTransactions() {
+        return ResponseEntity.ok(transactionService.getAllTransactions());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<TransactionResponseDto> getById(@PathVariable Integer id) {
+        return ResponseEntity.ok(transactionService.getTransactionById(id));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateTransaction(@PathVariable Integer id, @RequestBody TransactionRequestDto transactionRequestDto) {
+        transactionService.updateTransactionById(id, transactionRequestDto);
         return ResponseEntity.ok().build();
     }
 

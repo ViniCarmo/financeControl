@@ -1,3 +1,12 @@
 spring:
   application:
     name: finance-api
+  h2:
+    console:
+      path: /h2-console
+      enabled: true
+  datasource:
+    url: jdbc:h2:mem:finance-control
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver

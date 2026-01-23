@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
@@ -20,13 +21,15 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column(name = "value")
+    @Column(name = "transactionvalue")
     private Double value;
 
     @Column(name = "type")
+    @Enumerated(EnumType.STRING)
     private TransactionType type;
 
-    @Column(name = "date")
+    @Column(name = "transactiondate")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
 
     @Column(name = "description")

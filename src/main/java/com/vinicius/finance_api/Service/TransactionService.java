@@ -28,18 +28,14 @@ public class TransactionService {
         transactionRepository.save(newTransaction);
  }
 
- public void deleteTransaction(Integer id) {
-     transactionRepository.deleteById(id);
- }
-
  public List<TransactionResponseDto> getAllTransactions() {
      return transactionRepository.findAll()
              .stream()
              .map(transaction -> new TransactionResponseDto(
                      transaction.getId(),
                      transaction.getValue(),
-                     transaction.getType().toString(),
-                     transaction.getDate().toString(),
+                     transaction.getType(),
+                     transaction.getDate(),
                      transaction.getDescription()
              )).toList();
  }
@@ -50,8 +46,8 @@ public class TransactionService {
         return new TransactionResponseDto(
                 transaction.getId(),
                 transaction.getValue(),
-                transaction.getType().toString(),
-                transaction.getDate().toString(),
+                transaction.getType(),
+                transaction.getDate(),
                 transaction.getDescription()
         );
  }
@@ -72,7 +68,7 @@ public class TransactionService {
                 transaction.date() != null ? transaction.date() : existTransaction.getDate(),
                 transaction.description() != null ? transaction.description() : existTransaction.getDescription()
          );
-
+            transactionRepository.saveAndFlush(transactionUpdate);
  }
 
 }
