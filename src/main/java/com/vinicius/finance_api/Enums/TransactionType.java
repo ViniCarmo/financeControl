@@ -1,4 +1,4 @@
-package com.vinicius.finance_api.Entities;
+package com.vinicius.finance_api.Enums;
 
 public enum TransactionType {
     INCOME,

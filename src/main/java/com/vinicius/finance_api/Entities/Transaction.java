@@ -1,5 +1,6 @@
 package com.vinicius.finance_api.Entities;
 
+import com.vinicius.finance_api.Enums.TransactionType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

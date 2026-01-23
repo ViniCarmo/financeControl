@@ -1,7 +1,6 @@
 package com.vinicius.finance_api.Dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.vinicius.finance_api.Entities.TransactionType;
+import com.vinicius.finance_api.Enums.TransactionType;
 
 import java.time.LocalDate;
 
