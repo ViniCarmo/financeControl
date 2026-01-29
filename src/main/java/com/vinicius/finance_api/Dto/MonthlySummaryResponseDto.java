@@ -1,8 +1,13 @@
 package com.vinicius.finance_api.Dto;
 
+import java.time.LocalDate;
+
 public record MonthlySummaryResponseDto(
+        Integer id,
         Double totalIncome,
-        Double totalExpensive,
+        Double totalExpense,
         Double balance,
-        Double totalTransactions) {
+        Integer totalTransactions,
+        LocalDate initialDate,
+        LocalDate finalDate) {
 }

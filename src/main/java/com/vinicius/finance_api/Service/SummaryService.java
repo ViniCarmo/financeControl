@@ -46,8 +46,8 @@ public class SummaryService {
             return transactions.size();
         }
 
-    public MonthlySummary gerarSummary(LocalDate inicio, LocalDate fim) {
-        List<Transaction> transactions = getTransactionsPerDate(inicio, fim);
+    public MonthlySummary gerarSummary(LocalDate start, LocalDate end) {
+        List<Transaction> transactions = getTransactionsPerDate(start, end);
 
         Double income = totalIncome(transactions);
         Double expense = totalExpense(transactions);
@@ -59,10 +59,16 @@ public class SummaryService {
         summary.setTotalExpense(expense);
         summary.setBalance(bal);
         summary.setTotalTransactions(count);
-        summary.setInitialDate(inicio);
-        summary.setFinalDate(fim);
+        summary.setInitialDate(start);
+        summary.setFinalDate(end);
 
         return monthlySumaryRepository.save(summary);
     }
+
+    public  List<MonthlySummary> getAllSummaries() {
+        return monthlySumaryRepository.findAll();
+    }
+
+
 
 }
