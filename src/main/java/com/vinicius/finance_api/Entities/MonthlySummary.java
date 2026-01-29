@@ -24,13 +24,13 @@ public class MonthlySummary {
     private Double totalIncome;
 
     @Column(name = "total_expensive")
-    private Double totalExpensive;
+    private Double totalExpense;
 
     @Column(name = "balance")
     private Double balance;
 
     @Column(name = "total_transactions")
-    private Double totalTransactions;
+    private Integer totalTransactions;
 
     @Column(name = "initial_date")
     private LocalDate initialDate;

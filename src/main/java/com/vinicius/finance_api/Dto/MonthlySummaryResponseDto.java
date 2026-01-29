@@ -1,6 +1,6 @@
 package com.vinicius.finance_api.Dto;
 
-public record SummaryResponseDto(
+public record MonthlySummaryResponseDto(
         Double totalIncome,
         Double totalExpensive,
         Double balance,
