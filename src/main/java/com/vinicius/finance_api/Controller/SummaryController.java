@@ -22,7 +22,7 @@ public class SummaryController {
         this.summaryService = summaryService;
     }
 
-    @PostMapping("/generate")
+    @PostMapping("/generate")   
     public ResponseEntity<MonthlySummaryResponseDto> gerarSummaryManual() {
         LocalDate now = LocalDate.now();
         LocalDate start = now.withDayOfMonth(1);
