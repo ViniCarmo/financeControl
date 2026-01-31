@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MonthlySummary {
+public class Summary {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,4 +37,8 @@ public class MonthlySummary {
 
     @Column(name = "final_date")
     private LocalDate finalDate;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

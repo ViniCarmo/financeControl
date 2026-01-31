@@ -1,13 +1,10 @@
 package com.vinicius.finance_api.Controller;
 
-import com.vinicius.finance_api.Dto.MonthlySummaryResponseDto;
-import com.vinicius.finance_api.Entities.MonthlySummary;
+import com.vinicius.finance_api.Dto.SummaryResponseDto;
+import com.vinicius.finance_api.Entities.Summary;
 import com.vinicius.finance_api.Service.SummaryService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -23,14 +20,14 @@ public class SummaryController {
     }
 
     @PostMapping("/generate")   
-    public ResponseEntity<MonthlySummaryResponseDto> gerarSummaryManual() {
+    public ResponseEntity<SummaryResponseDto> gerarSummaryManual(@PathVariable Integer userId) {
         LocalDate now = LocalDate.now();
         LocalDate start = now.withDayOfMonth(1);
         LocalDate end = now.plusMonths(1).withDayOfMonth(1).minusDays(1);
 
-        MonthlySummary summary = summaryService.gerarSummary(start, end);
+        Summary summary = summaryService.gerarSummary(userId, start, end);
 
-        MonthlySummaryResponseDto dto = new MonthlySummaryResponseDto(
+        SummaryResponseDto dto = new SummaryResponseDto(
                 summary.getId(),
                 summary.getTotalIncome(),
                 summary.getTotalExpense(),
@@ -43,8 +40,14 @@ public class SummaryController {
         return ResponseEntity.ok(dto);
     }
 
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Summary>> getBySummaryUserId(@PathVariable Integer userId) {
+        return ResponseEntity.ok(summaryService.getSummariesByUserId(userId));
+    }
+
+
     @GetMapping
-    public ResponseEntity<List<MonthlySummary>> getAll() {
+    public ResponseEntity<List<Summary>> getAll() {
       return ResponseEntity.ok(summaryService.getAllSummaries());
 }
 }

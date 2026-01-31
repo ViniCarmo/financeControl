@@ -2,7 +2,7 @@ package com.vinicius.finance_api.Dto;
 
 import java.time.LocalDate;
 
-public record MonthlySummaryResponseDto(
+public record SummaryResponseDto(
         Integer id,
         Double totalIncome,
         Double totalExpense,

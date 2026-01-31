@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -29,6 +30,11 @@ public class TransactionController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<TransactionResponseDto>> getTransactionsByUserId(@PathVariable Integer userId) {
+        return ResponseEntity.ok(transactionService.getTransactionsByUserId(userId));
+    }
+
     @GetMapping
     public ResponseEntity<List<TransactionResponseDto>> getAllTransactions() {
         return ResponseEntity.ok(transactionService.getAllTransactions());
@@ -44,6 +50,8 @@ public class TransactionController {
         transactionService.updateTransactionById(id, transactionRequestDto);
         return ResponseEntity.ok().build();
     }
+
+
 
 
 }

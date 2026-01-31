@@ -9,6 +9,7 @@ public record TransactionResponseDto(
         Double value,
         TransactionType type,
         LocalDate date,
-        String description
+        String description,
+        Integer userId
 ) {
 }

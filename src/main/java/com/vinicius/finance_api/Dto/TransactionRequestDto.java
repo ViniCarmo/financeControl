@@ -1,6 +1,7 @@
 package com.vinicius.finance_api.Dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.vinicius.finance_api.Entities.User;
 import com.vinicius.finance_api.Enums.TransactionType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -22,7 +23,11 @@ public record TransactionRequestDto(
 
         @NotBlank(message = "Description cannot be blank")
         @JsonProperty("description")
-        String description
+        String description,
+
+        @NotNull(message = "User ID cannot be null")
+        @JsonProperty("userId")
+        Integer userId
 ) {
 
 }

@@ -1,11 +1,13 @@
 package com.vinicius.finance_api.Service;
 
-    import com.vinicius.finance_api.Entities.MonthlySummary;
+    import com.vinicius.finance_api.Entities.Summary;
     import com.vinicius.finance_api.Entities.Transaction;
+    import com.vinicius.finance_api.Entities.User;
     import com.vinicius.finance_api.Enums.TransactionType;
-    import com.vinicius.finance_api.Repositories.MonthlySumaryRepository;
+    import com.vinicius.finance_api.Repositories.SummaryRepository;
 import com.vinicius.finance_api.Repositories.TransactionRepository;
-import org.springframework.stereotype.Service;
+    import com.vinicius.finance_api.Repositories.UserRepository;
+    import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
     import java.util.List;
@@ -13,15 +15,17 @@ import java.time.LocalDate;
 @Service
 public class SummaryService {
     private final TransactionRepository transactionRepository;
-    private final MonthlySumaryRepository monthlySumaryRepository;
+    private final SummaryRepository monthlySumaryRepository;
+    private final UserRepository userRepository;
 
-    public SummaryService(MonthlySumaryRepository monthlySummaryRepository, TransactionRepository transactionRepository) {
+    public SummaryService(SummaryRepository monthlySummaryRepository, TransactionRepository transactionRepository, UserRepository userRepository) {
         this.monthlySumaryRepository = monthlySummaryRepository;
         this.transactionRepository = transactionRepository;
+        this.userRepository = userRepository;
     }
 
-        public List<Transaction> getTransactionsPerDate(LocalDate start, LocalDate finish) {
-            return transactionRepository.findByDateBetween(start, finish);
+        public List<Transaction> getTransactionsPerDate(Integer userId, LocalDate start, LocalDate finish) {
+            return transactionRepository.findByUserIdAndDateBetween(userId, start, finish);
         }
 
         public Double totalIncome(List<Transaction> transactions) {
@@ -46,27 +50,34 @@ public class SummaryService {
             return transactions.size();
         }
 
-    public MonthlySummary gerarSummary(LocalDate start, LocalDate end) {
-        List<Transaction> transactions = getTransactionsPerDate(start, end);
+    public Summary gerarSummary(Integer userId, LocalDate start, LocalDate end) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<Transaction> transactions = getTransactionsPerDate(userId, start, end);
 
         Double income = totalIncome(transactions);
         Double expense = totalExpense(transactions);
         Double bal = balance(income, expense);
         Integer count = totalTransactions(transactions);
 
-        MonthlySummary summary = new MonthlySummary();
+        Summary summary = new Summary();
         summary.setTotalIncome(income);
         summary.setTotalExpense(expense);
         summary.setBalance(bal);
         summary.setTotalTransactions(count);
         summary.setInitialDate(start);
         summary.setFinalDate(end);
+        summary.setUser(user);
 
         return monthlySumaryRepository.save(summary);
     }
 
-    public  List<MonthlySummary> getAllSummaries() {
+    public  List<Summary> getAllSummaries() {
         return monthlySumaryRepository.findAll();
+    }
+
+    public List<Summary> getSummariesByUserId(Integer userId){
+        return monthlySumaryRepository.findByUserId(userId);
     }
 
 
