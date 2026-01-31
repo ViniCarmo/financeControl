@@ -40,7 +40,6 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return new UserRequestDto(
-                user.getId(),
                 user.getUsername(),
                 user.getEmail(),
                 user.getPassword()
