@@ -21,7 +21,8 @@ public class UserService {
        User newUser = new User(null,
                userRequestDto.username(),
                userRequestDto.email(),
-               userRequestDto.password()
+               userRequestDto.password(),
+               null
        );
         userRepository.save(newUser);
     }
