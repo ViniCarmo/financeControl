@@ -1,8 +1,7 @@
-package com.vinicius.finance_api.Dto;
+package com.vinicius.finance_api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.vinicius.finance_api.Entities.User;
-import com.vinicius.finance_api.Enums.TransactionType;
+import com.vinicius.finance_api.enums.TransactionType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 

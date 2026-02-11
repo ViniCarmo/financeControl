@@ -1,11 +1,12 @@
-package com.vinicius.finance_api.Service;
+package com.vinicius.finance_api.service;
 
-import com.vinicius.finance_api.Dto.TransactionRequestDto;
-import com.vinicius.finance_api.Dto.TransactionResponseDto;
-import com.vinicius.finance_api.Entities.Transaction;
-import com.vinicius.finance_api.Entities.User;
-import com.vinicius.finance_api.Repositories.TransactionRepository;
-import com.vinicius.finance_api.Repositories.UserRepository;
+import com.vinicius.finance_api.dto.TransactionRequestDto;
+import com.vinicius.finance_api.dto.TransactionResponseDto;
+import com.vinicius.finance_api.entities.Transaction;
+import com.vinicius.finance_api.entities.User;
+import com.vinicius.finance_api.repositories.TransactionRepository;
+import com.vinicius.finance_api.repositories.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -77,7 +78,7 @@ public class TransactionService {
 
  public void deleteTransactionById(Integer id){
         if (!transactionRepository.existsById(id)){
-            throw new RuntimeException("Transaction not found");
+            throw new EntityNotFoundException("Transaction not found");
         }
         transactionRepository.deleteById(id);
  }

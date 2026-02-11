@@ -1,4 +1,4 @@
-package com.vinicius.finance_api.Dto;
+package com.vinicius.finance_api.dto;
 
 import java.time.LocalDate;
 

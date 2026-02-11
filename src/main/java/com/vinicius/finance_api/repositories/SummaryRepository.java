@@ -1,6 +1,6 @@
-package com.vinicius.finance_api.Repositories;
+package com.vinicius.finance_api.repositories;
 
-import com.vinicius.finance_api.Entities.Summary;
+import com.vinicius.finance_api.entities.Summary;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

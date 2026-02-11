@@ -1,4 +1,4 @@
-package com.vinicius.finance_api.Dto;
+package com.vinicius.finance_api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;

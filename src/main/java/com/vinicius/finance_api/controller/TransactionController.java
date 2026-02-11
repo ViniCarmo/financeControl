@@ -1,13 +1,12 @@
-package com.vinicius.finance_api.Controller;
+package com.vinicius.finance_api.controller;
 
-import com.vinicius.finance_api.Dto.TransactionRequestDto;
-import com.vinicius.finance_api.Dto.TransactionResponseDto;
-import com.vinicius.finance_api.Service.TransactionService;
+import com.vinicius.finance_api.dto.TransactionRequestDto;
+import com.vinicius.finance_api.dto.TransactionResponseDto;
+import com.vinicius.finance_api.service.TransactionService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
 
 @RestController

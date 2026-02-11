@@ -1,12 +1,13 @@
-package com.vinicius.finance_api.Service;
+package com.vinicius.finance_api.service;
 
-    import com.vinicius.finance_api.Entities.Summary;
-    import com.vinicius.finance_api.Entities.Transaction;
-    import com.vinicius.finance_api.Entities.User;
-    import com.vinicius.finance_api.Enums.TransactionType;
-    import com.vinicius.finance_api.Repositories.SummaryRepository;
-import com.vinicius.finance_api.Repositories.TransactionRepository;
-    import com.vinicius.finance_api.Repositories.UserRepository;
+    import com.vinicius.finance_api.entities.Summary;
+    import com.vinicius.finance_api.entities.Transaction;
+    import com.vinicius.finance_api.entities.User;
+    import com.vinicius.finance_api.enums.TransactionType;
+    import com.vinicius.finance_api.repositories.SummaryRepository;
+import com.vinicius.finance_api.repositories.TransactionRepository;
+    import com.vinicius.finance_api.repositories.UserRepository;
+    import jakarta.persistence.EntityNotFoundException;
     import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -51,7 +52,7 @@ public class SummaryService {
         }
 
     public Summary gerarSummary(Integer userId, LocalDate start, LocalDate end) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
 
         List<Transaction> transactions = getTransactionsPerDate(userId, start, end);
 

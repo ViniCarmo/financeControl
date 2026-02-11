@@ -1,4 +1,4 @@
-package com.vinicius.finance_api.Entities;
+package com.vinicius.finance_api.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -1,8 +1,8 @@
-package com.vinicius.finance_api.Controller;
+package com.vinicius.finance_api.controller;
 
-import com.vinicius.finance_api.Dto.SummaryResponseDto;
-import com.vinicius.finance_api.Entities.Summary;
-import com.vinicius.finance_api.Service.SummaryService;
+import com.vinicius.finance_api.dto.SummaryResponseDto;
+import com.vinicius.finance_api.entities.Summary;
+import com.vinicius.finance_api.service.SummaryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

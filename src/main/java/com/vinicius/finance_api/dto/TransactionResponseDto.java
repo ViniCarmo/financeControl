@@ -1,6 +1,6 @@
-package com.vinicius.finance_api.Dto;
+package com.vinicius.finance_api.dto;
 
-import com.vinicius.finance_api.Enums.TransactionType;
+import com.vinicius.finance_api.enums.TransactionType;
 
 import java.time.LocalDate;
 
