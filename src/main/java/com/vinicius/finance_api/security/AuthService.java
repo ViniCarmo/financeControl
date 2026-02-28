@@ -1,5 +1,6 @@
 package com.vinicius.finance_api.security;
 
+import com.vinicius.finance_api.entities.User;
 import com.vinicius.finance_api.repositories.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,7 +19,10 @@ public class AuthService implements UserDetailsService {
 
 
     @Override
-    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        return userRepository.findByLogin(login);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
+
+        return user;
     }
 }
