@@ -10,6 +10,13 @@ spring:
     username: sa
     password:
     driver-class-name: org.h2.Driver
+
+
 server:
   error:
     include-stacktrace: never
+
+api:
+  security:
+    token:
+      secret: ${JWT_secret_key:12345678}

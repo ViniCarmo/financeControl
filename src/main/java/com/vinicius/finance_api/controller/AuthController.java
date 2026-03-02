@@ -2,6 +2,7 @@ package com.vinicius.finance_api.controller;
 
 import com.vinicius.finance_api.entities.User;
 import com.vinicius.finance_api.security.AuthRequestDto;
+import com.vinicius.finance_api.security.DadosTokenJWT;
 import com.vinicius.finance_api.security.TokenService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +26,36 @@ public class AuthController {
 
     @PostMapping
     public ResponseEntity login(@RequestBody @Valid AuthRequestDto authRequestDto) {
-        var token = new UsernamePasswordAuthenticationToken(
+        var authtoken = new UsernamePasswordAuthenticationToken(
                 authRequestDto.email(),
                 authRequestDto.password());
-        var auth = authenticationManager.authenticate(token);
-        return ResponseEntity.ok(tokenService.generateToken((User) auth.getPrincipal()));
+        var auth = authenticationManager.authenticate(authtoken);
+
+        var tokenJWT = tokenService.generateToken((User) auth.getPrincipal());
+
+        return ResponseEntity.ok(new DadosTokenJWT(tokenJWT));
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
