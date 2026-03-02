@@ -1,5 +1,8 @@
-package com.vinicius.finance_api.security;
+package com.vinicius.finance_api.controller;
 
+import com.vinicius.finance_api.entities.User;
+import com.vinicius.finance_api.security.AuthRequestDto;
+import com.vinicius.finance_api.security.TokenService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,14 +20,16 @@ public class AuthController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private TokenService tokenService;
+
     @PostMapping
     public ResponseEntity login(@RequestBody @Valid AuthRequestDto authRequestDto) {
         var token = new UsernamePasswordAuthenticationToken(
                 authRequestDto.email(),
-                authRequestDto.password()
-        );
+                authRequestDto.password());
         var auth = authenticationManager.authenticate(token);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(tokenService.generateToken((User) auth.getPrincipal()));
     }
 
 }
