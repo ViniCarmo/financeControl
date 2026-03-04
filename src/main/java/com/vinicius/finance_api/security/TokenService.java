@@ -1,10 +1,11 @@
 package com.vinicius.finance_api.security;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.vinicius.finance_api.entities.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,20 @@ public class TokenService {
                     .sign(algorithm);
         } catch (JWTCreationException exception){
             throw new RuntimeException("Error while generating token", exception);
+        }
+    }
+
+    public String getSubject(String tokenJWT){
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(secret);
+            return JWT.require(algorithm)
+                    .withIssuer("finance-api")
+                    .build()
+                    .verify(tokenJWT)
+                    .getSubject();
+
+        } catch (JWTVerificationException exception){
+            throw new RuntimeException("Invalid or expired token");
         }
     }
 
