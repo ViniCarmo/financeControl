@@ -19,7 +19,7 @@ public class SummaryController {
         this.summaryService = summaryService;
     }
 
-    @PostMapping("/generate")   
+    @PostMapping("/generate/{userId}")
     public ResponseEntity<SummaryResponseDto> gerarSummaryManual(@PathVariable Integer userId) {
         LocalDate now = LocalDate.now();
         LocalDate start = now.withDayOfMonth(1);

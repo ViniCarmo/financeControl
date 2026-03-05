@@ -2,7 +2,7 @@ package com.vinicius.finance_api.controller;
 
 import com.vinicius.finance_api.entities.User;
 import com.vinicius.finance_api.security.AuthRequestDto;
-import com.vinicius.finance_api.security.DadosTokenJWT;
+import com.vinicius.finance_api.security.TokenDataJWT;
 import com.vinicius.finance_api.security.TokenService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class AuthController {
 
         var tokenJWT = tokenService.generateToken((User) auth.getPrincipal());
 
-        return ResponseEntity.ok(new DadosTokenJWT(tokenJWT));
+        return ResponseEntity.ok(new TokenDataJWT(tokenJWT));
     }
 
 
