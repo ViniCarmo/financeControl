@@ -4,6 +4,8 @@ import com.vinicius.finance_api.dto.TransactionRequestDto;
 import com.vinicius.finance_api.dto.TransactionResponseDto;
 import com.vinicius.finance_api.service.TransactionService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,8 +37,9 @@ public class TransactionController {
     }
 
     @GetMapping
-    public ResponseEntity<List<TransactionResponseDto>> getAllTransactions() {
-        return ResponseEntity.ok(transactionService.getAllTransactions());
+    public ResponseEntity<Page<TransactionResponseDto>> getAllTransactions(@RequestParam(defaultValue = "0") int page,
+                                                                   @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(transactionService.getAllTransactions(PageRequest.of(page, size)));
     }
 
     @GetMapping("/{id}")

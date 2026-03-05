@@ -7,6 +7,8 @@ import com.vinicius.finance_api.entities.User;
 import com.vinicius.finance_api.repositories.TransactionRepository;
 import com.vinicius.finance_api.repositories.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,9 +39,8 @@ public class TransactionService {
         transactionRepository.save(newTransaction);
  }
 
- public List<TransactionResponseDto> getAllTransactions() {
-     return transactionRepository.findAll()
-             .stream()
+ public Page<TransactionResponseDto> getAllTransactions(Pageable pageable) {
+     return transactionRepository.findAll(pageable)
              .map(transaction -> new TransactionResponseDto(
                      transaction.getId(),
                      transaction.getValue(),
@@ -47,7 +48,7 @@ public class TransactionService {
                      transaction.getDate(),
                      transaction.getDescription(),
                      transaction.getUser().getId()
-             )).toList();
+             ));
  }
 
  public TransactionResponseDto getTransactionById (Integer id){

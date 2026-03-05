@@ -6,9 +6,10 @@ import com.vinicius.finance_api.entities.User;
 import com.vinicius.finance_api.exceptions.EmailAlreadyExistsException;
 import com.vinicius.finance_api.repositories.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 public class UserService {
@@ -33,14 +34,13 @@ public class UserService {
         userRepository.save(newUser);
     }
 
-    public List<UserResponseDto> getAllUsers() {
-        return userRepository.findAll()
-                .stream()
+    public Page<UserResponseDto> getAllUsers(Pageable pageable) {
+        return userRepository.findAll(pageable)
                 .map(user -> new UserResponseDto(
-                        user.getId(),
-                        user.getUsername(),
-                        user.getEmail()
-                )).toList();
+                user.getId(),
+                user.getUsername(),
+                user.getEmail()
+        ));
     }
 
     public UserRequestDto getUserById(Integer id) {
