@@ -8,6 +8,7 @@ import com.vinicius.finance_api.repositories.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -15,9 +16,11 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public void createUser(UserRequestDto userRequestDto) {
@@ -28,7 +31,7 @@ public class UserService {
         User newUser = new User(null,
                 userRequestDto.username(),
                 userRequestDto.email(),
-                userRequestDto.password(),
+                passwordEncoder.encode(userRequestDto.password()),
                 null
         );
         userRepository.save(newUser);
