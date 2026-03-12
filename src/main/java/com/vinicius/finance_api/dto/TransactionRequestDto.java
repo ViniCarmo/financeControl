@@ -26,12 +26,8 @@ public record TransactionRequestDto(
         @NotBlank(message = "Description cannot be blank")
         @Size(max = 255, message = "Description must have at most 255 characters")
         @JsonProperty("description")
-        String description,
+        String description
 
-        @NotNull(message = "User ID cannot be null")
-        @Positive(message = "User ID must be a positive number")
-        @JsonProperty("userId")
-        Integer userId
 ) {
 
 }

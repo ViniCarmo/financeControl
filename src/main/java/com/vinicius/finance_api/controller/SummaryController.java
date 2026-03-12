@@ -2,8 +2,10 @@ package com.vinicius.finance_api.controller;
 
 import com.vinicius.finance_api.dto.SummaryResponseDto;
 import com.vinicius.finance_api.entities.Summary;
+import com.vinicius.finance_api.entities.User;
 import com.vinicius.finance_api.service.SummaryService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -19,15 +21,15 @@ public class SummaryController {
         this.summaryService = summaryService;
     }
 
-    @PostMapping("/generate/{userId}")
-    public ResponseEntity<SummaryResponseDto> gerarSummaryManual(@PathVariable Integer userId) {
+    @PostMapping("/generate/")
+    public ResponseEntity<SummaryResponseDto> gerarSummaryManual(@AuthenticationPrincipal User loggedUser) {
         LocalDate now = LocalDate.now();
         LocalDate start = now.withDayOfMonth(1);
         LocalDate end = now.plusMonths(1).withDayOfMonth(1).minusDays(1);
 
-        Summary summary = summaryService.gerarSummary(userId, start, end);
+        Summary summary = summaryService.gerarSummary(loggedUser.getId(), start, end);
 
-        SummaryResponseDto dto = new SummaryResponseDto(
+        return ResponseEntity.ok(new SummaryResponseDto(
                 summary.getId(),
                 summary.getTotalIncome(),
                 summary.getTotalExpense(),
@@ -35,19 +37,22 @@ public class SummaryController {
                 summary.getTotalTransactions(),
                 summary.getInitialDate(),
                 summary.getFinalDate()
-        );
-
-        return ResponseEntity.ok(dto);
+        ));
     }
-
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Summary>> getBySummaryUserId(@PathVariable Integer userId) {
-        return ResponseEntity.ok(summaryService.getSummariesByUserId(userId));
-    }
-
 
     @GetMapping
-    public ResponseEntity<List<Summary>> getAll() {
-      return ResponseEntity.ok(summaryService.getAllSummaries());
-}
+    public ResponseEntity<List<SummaryResponseDto>> getMySummaries(
+            @AuthenticationPrincipal User loggedUser) {
+        return ResponseEntity.ok(summaryService.getSummariesByUserId(loggedUser.getId())
+                .stream()
+                .map(s -> new SummaryResponseDto(
+                        s.getId(),
+                        s.getTotalIncome(),
+                        s.getTotalExpense(),
+                        s.getBalance(),
+                        s.getTotalTransactions(),
+                        s.getInitialDate(),
+                        s.getFinalDate()
+                )).toList());
+    }
 }

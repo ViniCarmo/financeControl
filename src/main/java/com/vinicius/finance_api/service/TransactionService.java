@@ -24,36 +24,36 @@ public class TransactionService {
         this.userRepository = userRepository;
     }
 
- public void saveTransaction(TransactionRequestDto transaction) {
-     User user = userRepository.findById(transaction.userId())
-             .orElseThrow(() -> new RuntimeException("User not found"));
+    public void saveTransaction(TransactionRequestDto transaction, Integer userid) {
+        User user = userRepository.findById(userid)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-     Transaction newTransaction = new Transaction(
-             null,
+        Transaction newTransaction = new Transaction(
+                null,
                 transaction.value(),
                 transaction.type(),
                 transaction.date(),
                 transaction.description(),
-             user
-     );
+                user
+        );
         transactionRepository.save(newTransaction);
- }
+    }
 
- public Page<TransactionResponseDto> getAllTransactions(Pageable pageable) {
-     return transactionRepository.findAll(pageable)
-             .map(transaction -> new TransactionResponseDto(
-                     transaction.getId(),
-                     transaction.getValue(),
-                     transaction.getType(),
-                     transaction.getDate(),
-                     transaction.getDescription(),
-                     transaction.getUser().getId()
-             ));
- }
+    public Page<TransactionResponseDto> getAllTransactions(Integer userId, Pageable pageable) {
+        return transactionRepository.findByUserId(userId, pageable)
+                .map(transaction -> new TransactionResponseDto(
+                        transaction.getId(),
+                        transaction.getValue(),
+                        transaction.getType(),
+                        transaction.getDate(),
+                        transaction.getDescription(),
+                        transaction.getUser().getId()
+                ));
+    }
 
- public TransactionResponseDto getTransactionById (Integer id){
-        Transaction transaction = transactionRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Transaction not found"));
+    public TransactionResponseDto getTransactionById(Integer id, Integer userId) {
+        Transaction transaction = transactionRepository.findByIdAndUserId(id, userId)
+                .orElseThrow(() -> new EntityNotFoundException("Transaction not found"));
         return new TransactionResponseDto(
                 transaction.getId(),
                 transaction.getValue(),
@@ -62,43 +62,24 @@ public class TransactionService {
                 transaction.getDescription(),
                 transaction.getUser().getId()
         );
- }
-
-    public List<TransactionResponseDto> getTransactionsByUserId(Integer userId) {
-        return transactionRepository.findByUserId(userId)
-                .stream()
-                .map(t -> new TransactionResponseDto(
-                        t.getId(),
-                        t.getValue(),
-                        t.getType(),
-                        t.getDate(),
-                        t.getDescription(),
-                        t.getUser().getId()
-                )).toList();
     }
 
- public void deleteTransactionById(Integer id){
-        if (!transactionRepository.existsById(id)){
-            throw new EntityNotFoundException("Transaction not found");
-        }
-        transactionRepository.deleteById(id);
- }
+    public void deleteTransactionById(Integer id, Integer userId) {
+        Transaction transaction = transactionRepository.findByIdAndUserId(id, userId)
+                .orElseThrow(() -> new EntityNotFoundException("Transaction not found"));
+        transactionRepository.delete(transaction);
+    }
 
- public void updateTransactionById (Integer id, TransactionRequestDto transaction){
-       Transaction existTransaction = transactionRepository.findById(id).orElseThrow(() -> new RuntimeException("Transaction not found"));
+    public void updateTransactionById(Integer id, TransactionRequestDto transaction, Integer userId) {
+        Transaction existTransaction = transactionRepository.findByIdAndUserId(id, userId)
+                .orElseThrow(() -> new EntityNotFoundException("Transaction not found"));
 
-       User user = userRepository.findById(transaction.userId())
-               .orElseThrow(() -> new RuntimeException("User not found"));
+        existTransaction.setValue(transaction.value() != null ? transaction.value() : existTransaction.getValue());
+        existTransaction.setType(transaction.type() != null ? transaction.type() : existTransaction.getType());
+        existTransaction.setDate(transaction.date() != null ? transaction.date() : existTransaction.getDate());
+        existTransaction.setDescription(transaction.description() != null ? transaction.description() : existTransaction.getDescription());
 
-         Transaction transactionUpdate = new Transaction(
-                existTransaction.getId(),
-                transaction.value() != null ? transaction.value() : existTransaction.getValue(),
-                transaction.type() != null ? transaction.type() : existTransaction.getType(),
-                transaction.date() != null ? transaction.date() : existTransaction.getDate(),
-                transaction.description() != null ? transaction.description() : existTransaction.getDescription(),
-                 user
-         );
-            transactionRepository.saveAndFlush(transactionUpdate);
- }
+        transactionRepository.save(existTransaction);
+    }
 
 }

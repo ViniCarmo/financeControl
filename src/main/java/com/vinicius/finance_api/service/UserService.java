@@ -46,16 +46,6 @@ public class UserService {
         ));
     }
 
-    public UserRequestDto getUserById(Integer id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
-        return new UserRequestDto(
-                user.getUsername(),
-                user.getEmail(),
-                user.getPassword()
-        );
-    }
-
     public void deleteUserById(Integer id) {
         if (!userRepository.existsById(id)) {
             throw new RuntimeException("User not found");
@@ -69,7 +59,7 @@ public class UserService {
 
         existingUser.setUsername(userRequestDto.username());
         existingUser.setEmail(userRequestDto.email());
-        existingUser.setPassword(userRequestDto.password());
+        existingUser.setPassword(passwordEncoder.encode(userRequestDto.password()));
 
         userRepository.save(existingUser);
     }

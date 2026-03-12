@@ -73,9 +73,6 @@ public class SummaryService {
         return monthlySumaryRepository.save(summary);
     }
 
-    public  List<Summary> getAllSummaries() {
-        return monthlySumaryRepository.findAll();
-    }
 
     public List<Summary> getSummariesByUserId(Integer userId){
         return monthlySumaryRepository.findByUserId(userId);
