@@ -1,8 +1,8 @@
 package com.vinicius.finance_api.service;
 
-    import com.vinicius.finance_api.entities.Summary;
-    import com.vinicius.finance_api.entities.Transaction;
-    import com.vinicius.finance_api.entities.User;
+    import com.vinicius.finance_api.entity.Summary;
+    import com.vinicius.finance_api.entity.Transaction;
+    import com.vinicius.finance_api.entity.User;
     import com.vinicius.finance_api.enums.TransactionType;
     import com.vinicius.finance_api.repositories.SummaryRepository;
 import com.vinicius.finance_api.repositories.TransactionRepository;

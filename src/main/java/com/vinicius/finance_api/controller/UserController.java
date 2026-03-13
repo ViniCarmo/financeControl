@@ -2,7 +2,7 @@ package com.vinicius.finance_api.controller;
 
 import com.vinicius.finance_api.dto.UserRequestDto;
 import com.vinicius.finance_api.dto.UserResponseDto;
-import com.vinicius.finance_api.entities.User;
+import com.vinicius.finance_api.entity.User;
 import com.vinicius.finance_api.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -10,8 +10,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/users")

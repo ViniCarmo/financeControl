@@ -1,4 +1,4 @@
-package com.vinicius.finance_api.entities;
+package com.vinicius.finance_api.entity;
 
 import com.vinicius.finance_api.enums.TransactionType;
 import jakarta.persistence.*;

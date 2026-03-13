@@ -1,8 +1,7 @@
 package com.vinicius.finance_api.repositories;
 
-import com.vinicius.finance_api.entities.User;
+import com.vinicius.finance_api.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Optional;
 

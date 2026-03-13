@@ -2,16 +2,14 @@ package com.vinicius.finance_api.service;
 
 import com.vinicius.finance_api.dto.TransactionRequestDto;
 import com.vinicius.finance_api.dto.TransactionResponseDto;
-import com.vinicius.finance_api.entities.Transaction;
-import com.vinicius.finance_api.entities.User;
+import com.vinicius.finance_api.entity.Transaction;
+import com.vinicius.finance_api.entity.User;
 import com.vinicius.finance_api.repositories.TransactionRepository;
 import com.vinicius.finance_api.repositories.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class TransactionService {

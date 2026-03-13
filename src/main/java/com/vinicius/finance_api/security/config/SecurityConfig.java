@@ -1,5 +1,6 @@
-package com.vinicius.finance_api.security;
+package com.vinicius.finance_api.security.config;
 
+import com.vinicius.finance_api.security.filter.SecurityFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;

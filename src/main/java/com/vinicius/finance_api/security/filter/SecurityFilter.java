@@ -1,11 +1,11 @@
-package com.vinicius.finance_api.security;
+package com.vinicius.finance_api.security.filter;
 
 import com.vinicius.finance_api.repositories.UserRepository;
+import com.vinicius.finance_api.security.service.TokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;

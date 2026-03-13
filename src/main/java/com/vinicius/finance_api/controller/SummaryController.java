@@ -1,8 +1,8 @@
 package com.vinicius.finance_api.controller;
 
 import com.vinicius.finance_api.dto.SummaryResponseDto;
-import com.vinicius.finance_api.entities.Summary;
-import com.vinicius.finance_api.entities.User;
+import com.vinicius.finance_api.entity.Summary;
+import com.vinicius.finance_api.entity.User;
 import com.vinicius.finance_api.service.SummaryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

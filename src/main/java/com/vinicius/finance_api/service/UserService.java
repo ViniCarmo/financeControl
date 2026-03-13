@@ -2,10 +2,9 @@ package com.vinicius.finance_api.service;
 
 import com.vinicius.finance_api.dto.UserRequestDto;
 import com.vinicius.finance_api.dto.UserResponseDto;
-import com.vinicius.finance_api.entities.User;
+import com.vinicius.finance_api.entity.User;
 import com.vinicius.finance_api.exceptions.EmailAlreadyExistsException;
 import com.vinicius.finance_api.repositories.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;

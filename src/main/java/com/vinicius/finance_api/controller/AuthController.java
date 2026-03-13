@@ -1,9 +1,9 @@
 package com.vinicius.finance_api.controller;
 
-import com.vinicius.finance_api.entities.User;
-import com.vinicius.finance_api.security.AuthRequestDto;
-import com.vinicius.finance_api.security.TokenDataJWT;
-import com.vinicius.finance_api.security.TokenService;
+import com.vinicius.finance_api.entity.User;
+import com.vinicius.finance_api.dto.AuthRequestDto;
+import com.vinicius.finance_api.dto.TokenDataJWT;
+import com.vinicius.finance_api.security.service.TokenService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

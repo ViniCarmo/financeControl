@@ -1,6 +1,6 @@
-package com.vinicius.finance_api.service;
+package com.vinicius.finance_api.security.service;
 
-import com.vinicius.finance_api.entities.User;
+import com.vinicius.finance_api.entity.User;
 import com.vinicius.finance_api.repositories.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
