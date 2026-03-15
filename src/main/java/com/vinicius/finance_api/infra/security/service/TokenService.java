@@ -1,4 +1,4 @@
-package com.vinicius.finance_api.security.service;
+package com.vinicius.finance_api.infra.security.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;

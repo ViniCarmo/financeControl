@@ -1,4 +1,4 @@
-package com.vinicius.finance_api.security.service;
+package com.vinicius.finance_api.infra.security.service;
 
 import com.vinicius.finance_api.entity.User;
 import com.vinicius.finance_api.repositories.UserRepository;

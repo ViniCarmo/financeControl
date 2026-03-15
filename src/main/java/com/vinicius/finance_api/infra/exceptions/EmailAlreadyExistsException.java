@@ -1,4 +1,4 @@
-package com.vinicius.finance_api.exceptions;
+package com.vinicius.finance_api.infra.exceptions;
 
 public class EmailAlreadyExistsException extends RuntimeException {
     //error 409

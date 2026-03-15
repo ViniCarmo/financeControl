@@ -3,7 +3,7 @@ package com.vinicius.finance_api.controller;
 import com.vinicius.finance_api.entity.User;
 import com.vinicius.finance_api.dto.AuthRequestDto;
 import com.vinicius.finance_api.dto.TokenDataJWT;
-import com.vinicius.finance_api.security.service.TokenService;
+import com.vinicius.finance_api.infra.security.service.TokenService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,8 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @RequestMapping("/auth")
 public class AuthController {
 

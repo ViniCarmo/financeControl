@@ -1,7 +1,7 @@
-package com.vinicius.finance_api.security.filter;
+package com.vinicius.finance_api.infra.security.filter;
 
+import com.vinicius.finance_api.infra.security.service.TokenService;
 import com.vinicius.finance_api.repositories.UserRepository;
-import com.vinicius.finance_api.security.service.TokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

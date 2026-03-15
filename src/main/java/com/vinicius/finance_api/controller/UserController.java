@@ -4,6 +4,7 @@ import com.vinicius.finance_api.dto.UserRequestDto;
 import com.vinicius.finance_api.dto.UserResponseDto;
 import com.vinicius.finance_api.entity.User;
 import com.vinicius.finance_api.service.UserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,6 +29,7 @@ public class UserController {
     }
 
     @GetMapping("/me")
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<UserResponseDto> getme(@AuthenticationPrincipal User loggedUser) {
         return ResponseEntity.ok(new UserResponseDto(
                 loggedUser.getId(),
@@ -38,21 +40,17 @@ public class UserController {
 
 
     @DeleteMapping("/me")
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<Void> deleteUserById(@AuthenticationPrincipal User loggedUser) {
         userService.deleteUserById(loggedUser.getId());
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<Void> updateUser(@AuthenticationPrincipal User loggeduser, @RequestBody @Valid UserRequestDto userRequestDto) {
         userService.updateUser(loggeduser.getId(), userRequestDto);
         return ResponseEntity.ok().build();
-    }
-
-    @GetMapping
-    public ResponseEntity<Page<UserResponseDto>> getAllUsers(@RequestParam(defaultValue = "0") int page,
-                                                             @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(userService.getAllUsers(PageRequest.of(page, size)));
     }
 
 }

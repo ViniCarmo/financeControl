@@ -1,4 +1,4 @@
-package com.vinicius.finance_api.exceptions;
+package com.vinicius.finance_api.infra.exceptions;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

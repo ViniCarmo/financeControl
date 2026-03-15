@@ -4,6 +4,7 @@ import com.vinicius.finance_api.dto.SummaryResponseDto;
 import com.vinicius.finance_api.entity.Summary;
 import com.vinicius.finance_api.entity.User;
 import com.vinicius.finance_api.service.SummaryService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/summary")
+@SecurityRequirement(name = "bearer-key")
 public class SummaryController {
 
     private final SummaryService summaryService;

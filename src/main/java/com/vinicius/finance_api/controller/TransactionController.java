@@ -4,6 +4,7 @@ import com.vinicius.finance_api.dto.TransactionRequestDto;
 import com.vinicius.finance_api.dto.TransactionResponseDto;
 import com.vinicius.finance_api.entity.User;
 import com.vinicius.finance_api.service.TransactionService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/transactions")
+@SecurityRequirement(name = "bearer-key")
 public class TransactionController {
     private final TransactionService transactionService;
 

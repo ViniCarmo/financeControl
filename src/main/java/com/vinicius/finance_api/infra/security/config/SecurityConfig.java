@@ -1,6 +1,6 @@
-package com.vinicius.finance_api.security.config;
+package com.vinicius.finance_api.infra.security.config;
 
-import com.vinicius.finance_api.security.filter.SecurityFilter;
+import com.vinicius.finance_api.infra.security.filter.SecurityFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -31,6 +31,7 @@ public class SecurityConfig {
                .authorizeHttpRequests(auth -> auth
                        .requestMatchers("/auth/**", "/auth").permitAll()
                        .requestMatchers(HttpMethod.POST, "/users").permitAll()
+                       .requestMatchers( "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
                        .anyRequest().authenticated())
                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                .build();
