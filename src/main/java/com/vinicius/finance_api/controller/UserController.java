@@ -46,7 +46,7 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/me")
     @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<Void> updateUser(@AuthenticationPrincipal User loggeduser, @RequestBody @Valid UserRequestDto userRequestDto) {
         userService.updateUser(loggeduser.getId(), userRequestDto);
