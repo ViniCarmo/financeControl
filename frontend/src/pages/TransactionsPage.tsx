@@ -1,7 +1,9 @@
 import { FormEvent, useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { api } from "../api/client";
 import type { PaginatedResponse, Transaction, TransactionType } from "../types";
 import { Button, Input, Modal, Select } from "../components/ui";
+import { useAuth } from "../context/AuthContext";
 
 interface TransactionFormState {
   value: string;
@@ -18,6 +20,9 @@ const emptyForm: TransactionFormState = {
 };
 
 export function TransactionsPage() {
+  const { token } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [page, setPage] = useState(0);
   const [size] = useState(10);
@@ -35,6 +40,13 @@ export function TransactionsPage() {
   const [deleting, setDeleting] = useState(false);
 
   const loadTransactions = async (pageToLoad = page) => {
+    if (!token) {
+      setTransactions([]);
+      setTotalPages(0);
+      setLoading(false);
+      setError(null);
+      return;
+    }
     setLoading(true);
     setError(null);
     try {
@@ -42,9 +54,7 @@ export function TransactionsPage() {
         params: { page: pageToLoad, size }
       });
       const data = res.data;
-      setTransactions(
-        filterType === "ALL" ? data.content : data.content.filter((t) => t.type === filterType)
-      );
+      setTransactions(data.content);
       setTotalPages(data.totalPages ?? 1);
     } catch (err: unknown) {
       console.error(err);
@@ -56,14 +66,19 @@ export function TransactionsPage() {
 
   useEffect(() => {
     void loadTransactions(0);
-  }, [filterType]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filterType, token]);
 
   useEffect(() => {
     void loadTransactions(page);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page]);
+  }, [page, token]);
 
   const openCreateModal = () => {
+    if (!token) {
+      navigate("/login", { state: { from: `${location.pathname}${location.search}` } });
+      return;
+    }
     setEditing(null);
     setForm({
       ...emptyForm,
@@ -73,6 +88,10 @@ export function TransactionsPage() {
   };
 
   const openEditModal = (tx: Transaction) => {
+    if (!token) {
+      navigate("/login", { state: { from: `${location.pathname}${location.search}` } });
+      return;
+    }
     setEditing(tx);
     setForm({
       value: tx.value.toString(),
@@ -85,6 +104,10 @@ export function TransactionsPage() {
 
   const handleSave = async (e: FormEvent) => {
     e.preventDefault();
+    if (!token) {
+      navigate("/login", { state: { from: `${location.pathname}${location.search}` } });
+      return;
+    }
     setSaving(true);
     setError(null);
     try {
@@ -112,11 +135,19 @@ export function TransactionsPage() {
   };
 
   const confirmDelete = (id: number) => {
+    if (!token) {
+      navigate("/login", { state: { from: `${location.pathname}${location.search}` } });
+      return;
+    }
     setDeleteId(id);
   };
 
   const handleDelete = async () => {
     if (!deleteId) return;
+    if (!token) {
+      navigate("/login", { state: { from: `${location.pathname}${location.search}` } });
+      return;
+    }
     setDeleting(true);
     setError(null);
     try {
@@ -142,6 +173,20 @@ export function TransactionsPage() {
       </div>
 
       {error && <p className="text-xs text-expense">{error}</p>}
+      {!token && (
+        <div className="rounded-xl border border-slate-800 bg-slate-900/40 px-4 py-3">
+          <p className="text-xs text-slate-300">
+            You are browsing in read-only mode. Sign in to add, edit, or delete transactions.
+          </p>
+        </div>
+      )}
+      {token && filterType !== "ALL" && (
+        <div className="rounded-xl border border-slate-800 bg-slate-900/40 px-4 py-3">
+          <p className="text-xs text-slate-300">
+            Filter is a visual indicator only right now. The backend does not support type filtering yet, so results are not filtered server-side.
+          </p>
+        </div>
+      )}
 
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-2 text-xs text-slate-300">
@@ -160,7 +205,7 @@ export function TransactionsPage() {
         <div className="flex items-center gap-2 text-xs text-slate-300">
           <Button
             variant="secondary"
-            disabled={page === 0 || loading}
+            disabled={page === 0 || loading || !token}
             onClick={() => setPage((p) => Math.max(0, p - 1))}
           >
             Previous
@@ -170,7 +215,7 @@ export function TransactionsPage() {
           </span>
           <Button
             variant="secondary"
-            disabled={page + 1 >= totalPages || loading}
+            disabled={page + 1 >= totalPages || loading || !token}
             onClick={() => setPage((p) => p + 1)}
           >
             Next
@@ -194,6 +239,12 @@ export function TransactionsPage() {
               <tr>
                 <td colSpan={5} className="px-4 py-6 text-center text-slate-400">
                   Loading transactions...
+                </td>
+              </tr>
+            ) : !token ? (
+              <tr>
+                <td colSpan={5} className="px-4 py-6 text-center text-slate-400">
+                  Sign in to view your transactions.
                 </td>
               </tr>
             ) : transactions.length === 0 ? (

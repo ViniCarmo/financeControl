@@ -1,11 +1,12 @@
 import { FormEvent, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { Button, Input } from "../components/ui";
 
 export function LoginPage() {
   const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -17,7 +18,8 @@ export function LoginPage() {
     setLoading(true);
     try {
       await login({ email, password });
-      navigate("/");
+      const from = (location.state as { from?: string } | null)?.from;
+      navigate(from || "/");
     } catch (err: unknown) {
       setError("Invalid credentials or server error.");
       console.error(err);

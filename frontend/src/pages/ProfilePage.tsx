@@ -13,9 +13,15 @@ export function ProfilePage() {
   const [success, setSuccess] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [passwordValidation, setPasswordValidation] = useState<string | null>(null);
 
   const handleSave = async (e: FormEvent) => {
     e.preventDefault();
+    setPasswordValidation(null);
+    if (!password.trim()) {
+      setPasswordValidation("Password is required to save changes.");
+      return;
+    }
     setSaving(true);
     setError(null);
     setSuccess(null);
@@ -23,7 +29,7 @@ export function ProfilePage() {
       await api.put("/users/me", {
         username,
         email,
-        password: password || undefined
+        password
       });
       setSuccess("Profile updated successfully.");
       setPassword("");
@@ -58,6 +64,7 @@ export function ProfilePage() {
 
       {error && <p className="text-xs text-expense">{error}</p>}
       {success && <p className="text-xs text-income">{success}</p>}
+      {passwordValidation && <p className="text-xs text-expense">{passwordValidation}</p>}
 
       <form onSubmit={handleSave} className="space-y-4 rounded-xl border border-slate-800 bg-slate-900/60 px-4 py-4">
         <div>
@@ -79,8 +86,11 @@ export function ProfilePage() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Leave blank to keep current password"
+            placeholder="Required to save changes"
           />
+          <p className="mt-1 text-[11px] text-slate-400">
+            For now, the backend requires your password to update profile details.
+          </p>
         </div>
         <div className="flex justify-end">
           <Button type="submit" disabled={saving}>

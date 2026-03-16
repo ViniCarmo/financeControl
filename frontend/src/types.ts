@@ -15,10 +15,13 @@ export interface Transaction {
 }
 
 export interface Summary {
-  month: string;
+  id: number;
   totalIncome: number;
   totalExpense: number;
   balance: number;
+  totalTransactions: number;
+  initialDate: string;
+  finalDate: string;
 }
 
 export interface PaginatedResponse<T> {

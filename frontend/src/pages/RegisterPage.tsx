@@ -1,11 +1,12 @@
 import { FormEvent, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { Button, Input } from "../components/ui";
 
 export function RegisterPage() {
   const { register } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,7 +19,8 @@ export function RegisterPage() {
     setLoading(true);
     try {
       await register({ username, email, password });
-      navigate("/");
+      const from = (location.state as { from?: string } | null)?.from;
+      navigate(from || "/");
     } catch (err: unknown) {
       setError("Could not create account. Check data or try again later.");
       console.error(err);

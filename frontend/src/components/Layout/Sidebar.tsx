@@ -1,11 +1,13 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
 const navLinkClass =
   "flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium hover:bg-slate-800 transition-colors";
 
 export function Sidebar() {
-  const { user, logout } = useAuth();
+  const { user, token, logout } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   return (
     <aside className="bg-slate-900 border-r border-slate-800 w-64 min-h-screen flex flex-col">
@@ -32,6 +34,14 @@ export function Sidebar() {
           Transactions
         </NavLink>
         <NavLink
+          to="/summary"
+          className={({ isActive }) =>
+            `${navLinkClass} ${isActive ? "bg-slate-800 text-emerald-400" : "text-slate-200"}`
+          }
+        >
+          Summary
+        </NavLink>
+        <NavLink
           to="/profile"
           className={({ isActive }) =>
             `${navLinkClass} ${isActive ? "bg-slate-800 text-emerald-400" : "text-slate-200"}`
@@ -41,13 +51,25 @@ export function Sidebar() {
         </NavLink>
       </nav>
       <div className="px-4 py-4 border-t border-slate-800">
-        <button
-          type="button"
-          onClick={logout}
-          className="w-full text-sm font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 rounded-md px-3 py-2 transition-colors"
-        >
-          Logout
-        </button>
+        {token ? (
+          <button
+            type="button"
+            onClick={logout}
+            className="w-full text-sm font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 rounded-md px-3 py-2 transition-colors"
+          >
+            Logout
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={() =>
+              navigate("/login", { state: { from: `${location.pathname}${location.search}` } })
+            }
+            className="w-full text-sm font-medium text-slate-900 bg-emerald-400 hover:bg-emerald-300 rounded-md px-3 py-2 transition-colors"
+          >
+            Sign in
+          </button>
+        )}
       </div>
     </aside>
   );

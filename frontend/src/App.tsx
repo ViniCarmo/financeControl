@@ -6,6 +6,7 @@ import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { DashboardPage } from "./pages/DashboardPage";
 import { TransactionsPage } from "./pages/TransactionsPage";
+import { SummaryPage } from "./pages/SummaryPage";
 import { ProfilePage } from "./pages/ProfilePage";
 
 function App() {
@@ -17,23 +18,18 @@ function App() {
         <Route
           path="/"
           element={
-            <ProtectedRoute>
-              <DashboardLayout>
-                <DashboardPage />
-              </DashboardLayout>
-            </ProtectedRoute>
+            <DashboardLayout>
+              <DashboardPage />
+            </DashboardLayout>
           }
         />
         <Route
           path="/transactions"
-          element=
-          {(
-            <ProtectedRoute>
-              <DashboardLayout>
-                <TransactionsPage />
-              </DashboardLayout>
-            </ProtectedRoute>
-          )}
+          element={
+            <DashboardLayout>
+              <TransactionsPage />
+            </DashboardLayout>
+          }
         />
         <Route
           path="/profile"
@@ -41,6 +37,16 @@ function App() {
             <ProtectedRoute>
               <DashboardLayout>
                 <ProfilePage />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/summary"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <SummaryPage />
               </DashboardLayout>
             </ProtectedRoute>
           }
