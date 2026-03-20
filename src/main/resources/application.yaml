@@ -2,10 +2,13 @@ spring:
   application:
     name: finance-api
 
+  frontend:
+    url: ${FRONTEND_URL:http://localhost:5173}
+
   datasource:
-    url: jdbc:postgresql://localhost:5433/finance_control
-    username: postgres
-    password: admin
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5433/finance_control}
+    username: ${DATABASE_USERNAME:postgres}
+    password: ${DATABASE_PASSWORD:admin}
     driver-class-name: org.postgresql.Driver
 
   jpa:
