@@ -32,7 +32,7 @@ public class TransactionController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTransaction(@AuthenticationPrincipal User loggedUser,
                                                   @PathVariable Integer id) {
-        transactionService.deleteTransactionById(loggedUser.getId(),id);
+        transactionService.deleteTransactionById(id, loggedUser.getId());
         return ResponseEntity.ok().build();
     }
 
