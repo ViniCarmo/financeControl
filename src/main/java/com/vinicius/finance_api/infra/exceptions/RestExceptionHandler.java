@@ -62,6 +62,12 @@ public class RestExceptionHandler {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(message);
     }
 
+    @ExceptionHandler(IllegalStateException.class)
+    private ResponseEntity<RestErrorMessage> error409conflict(IllegalStateException ex) {
+        RestErrorMessage message = new RestErrorMessage(HttpStatus.CONFLICT, ex.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(message);
+    }
+
 
 
 

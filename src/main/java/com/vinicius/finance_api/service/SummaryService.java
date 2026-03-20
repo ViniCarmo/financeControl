@@ -52,6 +52,10 @@ public class SummaryService {
         }
 
     public Summary gerarSummary(Integer userId, LocalDate start, LocalDate end) {
+        if (monthlySumaryRepository.existsByUserIdAndInitialDate(userId, start)) {
+            throw new IllegalStateException("Summary already exists for this month.");
+        }
+
         User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
 
         List<Transaction> transactions = getTransactionsPerDate(userId, start, end);
@@ -76,6 +80,12 @@ public class SummaryService {
 
     public List<Summary> getSummariesByUserId(Integer userId){
         return monthlySumaryRepository.findByUserId(userId);
+    }
+
+    public void deleteSummary(Integer id, Integer userId) {
+        Summary summary = monthlySumaryRepository.findByIdAndUserId(id, userId)
+                .orElseThrow(() -> new EntityNotFoundException("Summary not found"));
+        monthlySumaryRepository.delete(summary);
     }
 
 

@@ -57,4 +57,12 @@ public class SummaryController {
                         s.getFinalDate()
                 )).toList());
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteSummary(@AuthenticationPrincipal User loggedUser,
+                                              @PathVariable Integer id) {
+        summaryService.deleteSummary(id, loggedUser.getId());
+        return ResponseEntity.ok().build();
+    }
+
 }
