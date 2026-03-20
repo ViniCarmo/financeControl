@@ -269,7 +269,7 @@ export function TransactionsPage() {
                   </td>
                   <td className="px-4 py-2 text-slate-200">
                     {tx.type === "EXPENSE" ? "-" : "+"}
-                    {tx.value.toLocaleString("en-US", { style: "currency", currency: "USD" })}
+                    {tx.value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
                   </td>
                   <td className="px-4 py-2 text-right space-x-2">
                     <Button

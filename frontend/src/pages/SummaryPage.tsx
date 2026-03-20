@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import axios from "axios";
 import { api } from "../api/client";
 import type { Summary } from "../types";
 import { Button } from "../components/ui";
@@ -8,6 +9,7 @@ export function SummaryPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [generating, setGenerating] = useState(false);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
 
   const loadSummaries = async () => {
     setLoading(true);
@@ -35,9 +37,30 @@ export function SummaryPage() {
       await loadSummaries();
     } catch (err: unknown) {
       console.error(err);
-      setError("Could not generate summary for current month.");
+      if (axios.isAxiosError(err) && err.response?.status === 409) {
+        setError("A summary already exists for this month. Delete it first to regenerate.");
+      } else {
+        setError("Could not generate summary for current month.");
+      }
     } finally {
       setGenerating(false);
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    const confirmed = window.confirm("Delete this summary?");
+    if (!confirmed) return;
+
+    setDeletingId(id);
+    setError(null);
+    try {
+      await api.delete(`/summary/${id}`);
+      await loadSummaries();
+    } catch (err: unknown) {
+      console.error(err);
+      setError("Could not delete summary.");
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -70,18 +93,19 @@ export function SummaryPage() {
               <th className="px-4 py-2 font-medium text-slate-400">Expense</th>
               <th className="px-4 py-2 font-medium text-slate-400">Balance</th>
               <th className="px-4 py-2 font-medium text-slate-400">Transactions</th>
+              <th className="px-4 py-2 font-medium text-slate-400 text-right">Actions</th>
             </tr>
           </thead>
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan={5} className="px-4 py-6 text-center text-slate-400">
+                <td colSpan={6} className="px-4 py-6 text-center text-slate-400">
                   Loading summaries...
                 </td>
               </tr>
             ) : rows.length === 0 ? (
               <tr>
-                <td colSpan={5} className="px-4 py-6 text-center text-slate-400">
+                <td colSpan={6} className="px-4 py-6 text-center text-slate-400">
                   No summaries yet. Generate one to get started.
                 </td>
               </tr>
@@ -93,19 +117,30 @@ export function SummaryPage() {
                     {new Date(s.finalDate).toLocaleDateString()}
                   </td>
                   <td className="px-4 py-2 text-income font-medium">
-                    {s.totalIncome.toLocaleString("en-US", { style: "currency", currency: "USD" })}
+                    {s.totalIncome.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
                   </td>
                   <td className="px-4 py-2 text-expense font-medium">
-                    {s.totalExpense.toLocaleString("en-US", { style: "currency", currency: "USD" })}
+                    {s.totalExpense.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
                   </td>
                   <td
                     className={`px-4 py-2 font-semibold ${
                       s.balance >= 0 ? "text-income" : "text-expense"
                     }`}
                   >
-                    {s.balance.toLocaleString("en-US", { style: "currency", currency: "USD" })}
+                    {s.balance.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
                   </td>
                   <td className="px-4 py-2 text-slate-200">{s.totalTransactions}</td>
+                  <td className="px-4 py-2 text-right">
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      className="text-xs px-2 py-1 text-expense hover:bg-slate-800"
+                      onClick={() => void handleDelete(s.id)}
+                      disabled={deletingId === s.id}
+                    >
+                      {deletingId === s.id ? "Deleting..." : "Delete"}
+                    </Button>
+                  </td>
                 </tr>
               ))
             )}

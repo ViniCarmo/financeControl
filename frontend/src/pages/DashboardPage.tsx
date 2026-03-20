@@ -122,7 +122,7 @@ export function DashboardPage() {
           title="Total income (current month)"
           value={
             token
-              ? totals.totalIncome.toLocaleString("en-US", { style: "currency", currency: "USD" })
+              ? totals.totalIncome.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
               : "-"
           }
           accent="income"
@@ -131,7 +131,7 @@ export function DashboardPage() {
           title="Total expenses (current month)"
           value={
             token
-              ? totals.totalExpense.toLocaleString("en-US", { style: "currency", currency: "USD" })
+              ? totals.totalExpense.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
               : "-"
           }
           accent="expense"
@@ -139,7 +139,7 @@ export function DashboardPage() {
         <Card
           title="Balance (current month)"
           value={
-            token ? totals.balance.toLocaleString("en-US", { style: "currency", currency: "USD" }) : "-"
+            token ? totals.balance.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }) : "-"
           }
           accent={
             !token ? "neutral" : totals.balance >= 0 ? "income" : "expense"
@@ -199,9 +199,9 @@ export function DashboardPage() {
                     }`}
                   >
                     {tx.type === "EXPENSE" ? "-" : "+"}
-                    {tx.value.toLocaleString("en-US", {
+                    {tx.value.toLocaleString("pt-BR", {
                       style: "currency",
-                      currency: "USD"
+                      currency: "BRL"
                     })}
                   </p>
                 </li>
