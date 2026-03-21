@@ -50,13 +50,11 @@ export function TransactionsPage() {
     setLoading(true);
     setError(null);
     try {
-      const params: { page: number; size: number; type?: TransactionType } = {
+      const params = {
         page: pageToLoad,
-        size
+        size,
+        ...(filterType !== "ALL" ? { type: filterType } : {})
       };
-      if (filterType !== "ALL") {
-        params.type = filterType;
-      }
 
       const res = await api.get<PaginatedResponse<Transaction>>("/transactions", {
         params
