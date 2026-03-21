@@ -210,6 +210,15 @@ src/
 ├── test/                     # Testes unitários e de integração
 └── frontend/                 # Dashboard web (React + TypeScript)
 ```
+## Deploy
+
+| Serviço | URL |
+|---------|-----|
+| API (Render) | https://finance-api-drzx.onrender.com |
+| Frontend (Vercel) | https://finance-control-theta-lemon.vercel.app |
+| Swagger UI | https://finance-api-drzx.onrender.com/swagger-ui.html |
+
+> O plano gratuito do Render hiberna após 15 minutos de inatividade. A primeira requisição pode demorar até 50 segundos.
  
 ---
  
