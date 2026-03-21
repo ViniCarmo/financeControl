@@ -50,15 +50,11 @@ export function TransactionsPage() {
     setLoading(true);
     setError(null);
     try {
-      const params = {
-        page: pageToLoad,
-        size,
-        ...(filterType !== "ALL" ? { type: filterType } : {})
-      };
+      const url = filterType !== "ALL"
+          ? `/transactions?page=${pageToLoad}&size=${size}&type=${filterType}`
+          : `/transactions?page=${pageToLoad}&size=${size}`;
 
-      const res = await api.get<PaginatedResponse<Transaction>>("/transactions", {
-        params
-      });
+      const res = await api.get<PaginatedResponse<Transaction>>(url);
       const data = res.data;
       setTransactions(data.content);
       setTotalPages(data.totalPages ?? 1);
