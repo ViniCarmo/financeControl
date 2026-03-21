@@ -29,8 +29,8 @@ export function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-950 px-4">
-      <div className="w-full max-w-md rounded-2xl border border-slate-800 bg-slate-900/80 px-6 py-8 shadow-xl">
+    <div className="min-h-screen flex items-center justify-center bg-slate-950 px-4 py-6 sm:py-10">
+      <div className="w-full max-w-md rounded-2xl border border-slate-800 bg-slate-900/80 px-5 py-6 sm:px-6 sm:py-8 shadow-xl">
         <h1 className="text-2xl font-semibold text-emerald-400 text-center mb-2">Finance Dashboard</h1>
         <p className="text-sm text-slate-400 text-center mb-6">Sign in to manage your finances</p>
         <form onSubmit={handleSubmit} className="space-y-4">

@@ -19,7 +19,8 @@ export const Card: React.FC<{ title: string; value: string; accent?: "income" | 
 export const Button: React.FC<
   React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: "primary" | "secondary" | "ghost" }
 > = ({ variant = "primary", className = "", ...props }) => {
-  const base = "inline-flex items-center justify-center rounded-md px-3 py-2 text-sm font-medium transition-colors";
+  const base =
+    "inline-flex min-h-[44px] items-center justify-center rounded-md px-3 py-2.5 text-sm font-medium transition-colors";
   const variants: Record<string, string> = {
     primary: "bg-emerald-500 hover:bg-emerald-600 text-white disabled:opacity-60 disabled:cursor-not-allowed",
     secondary:
@@ -34,7 +35,7 @@ export const Input: React.FC<React.InputHTMLAttributes<HTMLInputElement>> = ({
   ...props
 }) => (
   <input
-    className={`w-full rounded-md border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-50 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent ${className}`}
+    className={`w-full min-h-[44px] rounded-md border border-slate-700 bg-slate-900 px-3 py-2.5 text-sm text-slate-50 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent ${className}`}
     {...props}
   />
 );
@@ -45,7 +46,7 @@ export const Select: React.FC<React.SelectHTMLAttributes<HTMLSelectElement>> = (
   ...props
 }) => (
   <select
-    className={`w-full rounded-md border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent ${className}`}
+    className={`w-full min-h-[44px] rounded-md border border-slate-700 bg-slate-900 px-3 py-2.5 text-sm text-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent ${className}`}
     {...props}
   >
     {children}
@@ -57,7 +58,7 @@ export const Textarea: React.FC<React.TextareaHTMLAttributes<HTMLTextAreaElement
   ...props
 }) => (
   <textarea
-    className={`w-full rounded-md border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-50 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent ${className}`}
+    className={`w-full min-h-[44px] rounded-md border border-slate-700 bg-slate-900 px-3 py-2.5 text-sm text-slate-50 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent ${className}`}
     {...props}
   />
 );
@@ -70,19 +71,19 @@ export const Modal: React.FC<{
 }> = ({ title, isOpen, onClose, children }) => {
   if (!isOpen) return null;
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-      <div className="w-full max-w-lg rounded-xl bg-slate-900 border border-slate-800 shadow-xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-0 sm:p-4">
+      <div className="h-full w-full rounded-none border-0 bg-slate-900 shadow-xl sm:h-auto sm:max-w-lg sm:rounded-xl sm:border sm:border-slate-800">
         <div className="flex items-center justify-between border-b border-slate-800 px-4 py-3">
           <h2 className="text-sm font-semibold text-slate-100">{title}</h2>
           <button
             type="button"
             onClick={onClose}
-            className="text-slate-400 hover:text-slate-200 text-sm px-1"
+            className="min-h-[44px] min-w-[44px] text-slate-400 hover:text-slate-200 text-sm px-1"
           >
             ✕
           </button>
         </div>
-        <div className="px-4 py-4">{children}</div>
+        <div className="max-h-[calc(100vh-64px)] overflow-y-auto px-4 py-4">{children}</div>
       </div>
     </div>
   );

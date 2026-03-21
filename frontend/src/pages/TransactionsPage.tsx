@@ -50,8 +50,16 @@ export function TransactionsPage() {
     setLoading(true);
     setError(null);
     try {
+      const params: { page: number; size: number; type?: TransactionType } = {
+        page: pageToLoad,
+        size
+      };
+      if (filterType !== "ALL") {
+        params.type = filterType;
+      }
+
       const res = await api.get<PaginatedResponse<Transaction>>("/transactions", {
-        params: { page: pageToLoad, size }
+        params
       });
       const data = res.data;
       setTransactions(data.content);
@@ -65,14 +73,9 @@ export function TransactionsPage() {
   };
 
   useEffect(() => {
-    void loadTransactions(0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filterType, token]);
-
-  useEffect(() => {
     void loadTransactions(page);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, token]);
+  }, [page, token, filterType]);
 
   const openCreateModal = () => {
     if (!token) {
@@ -182,18 +185,19 @@ export function TransactionsPage() {
       )}
       {token && filterType !== "ALL" && (
         <div className="rounded-xl border border-slate-800 bg-slate-900/40 px-4 py-3">
-          <p className="text-xs text-slate-300">
-            Filter is a visual indicator only right now. The backend does not support type filtering yet, so results are not filtered server-side.
-          </p>
+          <p className="text-xs text-slate-300">Filtering by type. Results shown are for the current page.</p>
         </div>
       )}
 
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-2 text-xs text-slate-300">
           <span>Filter by type:</span>
           <Select
             value={filterType}
-            onChange={(e) => setFilterType(e.target.value as "ALL" | TransactionType)}
+            onChange={(e) => {
+              setFilterType(e.target.value as "ALL" | TransactionType);
+              setPage(0);
+            }}
             className="w-40"
           >
             <option value="ALL">All</option>
@@ -223,7 +227,7 @@ export function TransactionsPage() {
         </div>
       </div>
 
-      <div className="overflow-x-auto rounded-xl border border-slate-800 bg-slate-900/60">
+      <div className="hidden md:block overflow-x-auto rounded-xl border border-slate-800 bg-slate-900/60">
         <table className="min-w-full text-left text-xs">
           <thead className="border-b border-slate-800 bg-slate-900/80">
             <tr>
@@ -292,6 +296,62 @@ export function TransactionsPage() {
             )}
           </tbody>
         </table>
+      </div>
+
+      <div className="md:hidden space-y-3">
+        {loading ? (
+          <div className="rounded-xl border border-slate-800 bg-slate-900/60 px-4 py-6 text-center text-slate-400 text-sm">
+            Loading transactions...
+          </div>
+        ) : !token ? (
+          <div className="rounded-xl border border-slate-800 bg-slate-900/60 px-4 py-6 text-center text-slate-400 text-sm">
+            Sign in to view your transactions.
+          </div>
+        ) : transactions.length === 0 ? (
+          <div className="rounded-xl border border-slate-800 bg-slate-900/60 px-4 py-6 text-center text-slate-400 text-sm">
+            No transactions yet. Start by adding one.
+          </div>
+        ) : (
+          transactions.map((tx) => (
+            <div key={tx.id} className="rounded-xl border border-slate-800 bg-slate-900/60 p-4 space-y-2">
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-sm font-medium text-slate-100">{tx.description}</p>
+                <p
+                  className={`text-sm font-semibold ${
+                    tx.type === "INCOME" ? "text-income" : "text-expense"
+                  }`}
+                >
+                  {tx.type === "EXPENSE" ? "-" : "+"}
+                  {tx.value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
+                </p>
+              </div>
+              <p className="text-xs text-slate-400">{new Date(tx.date).toLocaleDateString()}</p>
+              <p
+                className={`text-xs font-medium ${
+                  tx.type === "INCOME" ? "text-income" : "text-expense"
+                }`}
+              >
+                {tx.type === "INCOME" ? "Income" : "Expense"}
+              </p>
+              <div className="flex items-center gap-2 pt-2">
+                <Button
+                  variant="secondary"
+                  className="flex-1"
+                  onClick={() => openEditModal(tx)}
+                >
+                  Edit
+                </Button>
+                <Button
+                  variant="ghost"
+                  className="flex-1 text-expense hover:bg-slate-800"
+                  onClick={() => confirmDelete(tx.id)}
+                >
+                  Delete
+                </Button>
+              </div>
+            </div>
+          ))
+        )}
       </div>
 
       <Modal

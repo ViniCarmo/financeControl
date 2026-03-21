@@ -56,7 +56,7 @@ export function ProfilePage() {
   };
 
   return (
-    <div className="space-y-6 max-w-xl">
+    <div className="space-y-6 max-w-xl mx-auto">
       <div>
         <h2 className="text-xl font-semibold text-slate-100">Profile</h2>
         <p className="text-xs text-slate-400 mt-1">Manage your personal information.</p>
@@ -66,7 +66,10 @@ export function ProfilePage() {
       {success && <p className="text-xs text-income">{success}</p>}
       {passwordValidation && <p className="text-xs text-expense">{passwordValidation}</p>}
 
-      <form onSubmit={handleSave} className="space-y-4 rounded-xl border border-slate-800 bg-slate-900/60 px-4 py-4">
+      <form
+        onSubmit={handleSave}
+        className="space-y-4 rounded-xl border border-slate-800 bg-slate-900/60 px-4 py-4 sm:px-5 sm:py-5"
+      >
         <div>
           <label className="block text-xs font-medium text-slate-300 mb-1">Username</label>
           <Input value={username} onChange={(e) => setUsername(e.target.value)} required />
@@ -99,7 +102,7 @@ export function ProfilePage() {
         </div>
       </form>
 
-      <div className="rounded-xl border border-slate-800 bg-slate-900/60 px-4 py-4">
+      <div className="rounded-xl border border-slate-800 bg-slate-900/60 px-4 py-4 sm:px-5 sm:py-5">
         <h3 className="text-sm font-semibold text-slate-100 mb-2">Danger zone</h3>
         <p className="text-xs text-slate-400 mb-3">
           Deleting your account will remove all your data. This action cannot be undone.
@@ -113,7 +116,7 @@ export function ProfilePage() {
             Delete account
           </Button>
         ) : (
-          <div className="flex items-center gap-3">
+          <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:gap-3">
             <p className="text-xs text-slate-200">Are you sure?</p>
             <Button
               type="button"
