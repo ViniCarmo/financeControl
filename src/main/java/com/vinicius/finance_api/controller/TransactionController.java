@@ -3,6 +3,7 @@ package com.vinicius.finance_api.controller;
 import com.vinicius.finance_api.dto.TransactionRequestDto;
 import com.vinicius.finance_api.dto.TransactionResponseDto;
 import com.vinicius.finance_api.entity.User;
+import com.vinicius.finance_api.enums.TransactionType;
 import com.vinicius.finance_api.service.TransactionService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -39,8 +40,9 @@ public class TransactionController {
     @GetMapping
     public ResponseEntity<Page<TransactionResponseDto>> getAllTransactions(@AuthenticationPrincipal User loggedUser,
                                                                            @RequestParam(defaultValue = "0") int page,
-                                                                           @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(transactionService.getAllTransactions(loggedUser.getId(), PageRequest.of(page, size)));
+                                                                           @RequestParam(defaultValue = "10") int size,
+                                                                           @RequestParam(required = false) TransactionType type) {
+        return ResponseEntity.ok(transactionService.getAllTransactions(loggedUser.getId(), PageRequest.of(page, size), type));
     }
 
     @GetMapping("/{id}")

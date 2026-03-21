@@ -4,6 +4,7 @@ import com.vinicius.finance_api.dto.TransactionRequestDto;
 import com.vinicius.finance_api.dto.TransactionResponseDto;
 import com.vinicius.finance_api.entity.Transaction;
 import com.vinicius.finance_api.entity.User;
+import com.vinicius.finance_api.enums.TransactionType;
 import com.vinicius.finance_api.repositories.TransactionRepository;
 import com.vinicius.finance_api.repositories.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -37,16 +38,19 @@ public class TransactionService {
         transactionRepository.save(newTransaction);
     }
 
-    public Page<TransactionResponseDto> getAllTransactions(Integer userId, Pageable pageable) {
-        return transactionRepository.findByUserId(userId, pageable)
-                .map(transaction -> new TransactionResponseDto(
-                        transaction.getId(),
-                        transaction.getValue(),
-                        transaction.getType(),
-                        transaction.getDate(),
-                        transaction.getDescription(),
-                        transaction.getUser().getId()
-                ));
+    public Page<TransactionResponseDto> getAllTransactions(Integer userId, Pageable pageable, TransactionType type) {
+        Page<Transaction> transactions = type != null
+                ? transactionRepository.findByUserIdAndType(userId, type, pageable)
+                : transactionRepository.findByUserId(userId, pageable);
+
+        return transactions.map(transaction -> new TransactionResponseDto(
+                transaction.getId(),
+                transaction.getValue(),
+                transaction.getType(),
+                transaction.getDate(),
+                transaction.getDescription(),
+                transaction.getUser().getId()
+        ));
     }
 
     public TransactionResponseDto getTransactionById(Integer id, Integer userId) {

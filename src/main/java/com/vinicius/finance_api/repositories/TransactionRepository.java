@@ -1,6 +1,7 @@
 package com.vinicius.finance_api.repositories;
 
 import com.vinicius.finance_api.entity.Transaction;
+import com.vinicius.finance_api.enums.TransactionType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,4 +16,5 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
     Optional<Transaction> findByIdAndUserId(Integer id, Integer userId);
     List<Transaction> findByUserId(Integer userId);
     List<Transaction> findByUserIdAndDateBetween(Integer userId, LocalDate start, LocalDate finish);
+    Page<Transaction> findByUserIdAndType(Integer userId, TransactionType type, Pageable pageable);
 }
